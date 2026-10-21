@@ -1,0 +1,399 @@
+---
+// Personalize.astro - themes and languages. A swatch sets the page's terminal
+// theme (--t-* on <html>), so the hero's window changes too; a language button
+// puts the host list's words in that language.
+import TermWindow from './TermWindow.astro';
+import themeData from '../data/themes.json';
+import { languages } from '../data/languages';
+
+const { total, gradients, themes } = themeData;
+const surface = (t: (typeof themes)[number]) => t.gradient ?? t.background;
+const en = languages[0];
+---
+
+<section class="section" id="personalize">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Make it yours</span>
+      <h2 class="section-title">
+        <span class="text-gradient-white">{total} themes.</span>
+        <span class="text-gradient-sky"> {languages.length} languages.</span>
+      </h2>
+      <p class="section-desc">
+        Light and dark, following your desktop, with a theme for each. {gradients} of them are gradients. Give a host or a
+        group its own theme so production never looks like staging, and use shellwing in your own language.
+      </p>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-panel">
+        <h3 class="p-title">Pick a theme <span>the whole page follows</span></h3>
+        <div class="swatches" role="radiogroup" aria-label="Terminal theme">
+          {
+            themes.map((t, i) => (
+              <button
+                type="button"
+                class="swatch"
+                role="radio"
+                aria-checked={i === 0 ? 'true' : 'false'}
+                data-theme={JSON.stringify({ ...t, surface: surface(t) })}
+                style={`--sw-bg: ${surface(t)}; --sw-fg: ${t.foreground}; --sw-acc: ${t.accent}`}
+              >
+                <span class="sw-chip">
+                  <span class="sw-dots">
+                    {t.palette.slice(1, 7).map((c) => (
+                      <i style={`background: ${c}`} />
+                    ))}
+                  </span>
+                </span>
+                <span class="sw-name">{t.name}</span>
+                {t.gradient && <span class="sw-tag">gradient</span>}
+              </button>
+            ))
+          }
+        </div>
+
+        <TermWindow
+          class="p-term"
+          tabs={[{ label: 'web-01', sub: 'prod', kind: 'ssh', active: true }]}
+          label="A terminal in the chosen theme"
+        >
+          <pre><span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ ls -la /srv/shop
+<span class="c4">drwxr-xr-x</span>  <span class="c8">deploy</span>  <span class="c4">releases/</span>
+<span class="c6">lrwxrwxrwx</span>  <span class="c8">deploy</span>  <span class="c6">current</span> -&gt; releases/2026-10-21
+<span class="c2">-rwxr-xr-x</span>  <span class="c8">deploy</span>  <span class="c2">deploy.sh</span>
+<span class="c3">-rw-------</span>  <span class="c8">deploy</span>  <span class="c3">.env</span>
+<span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ systemctl is-failed shop-worker
+<span class="c1">failed</span>
+<span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ git log --oneline -2
+<span class="c3">a1f9e2c</span> <span class="c5">(HEAD -&gt; main)</span> Retry payments on 502
+<span class="c3">7c02d4b</span> Cache the cart for 30s
+<span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ <span class="cursor"></span></pre>
+        </TermWindow>
+      </div>
+
+      <div class="p-panel">
+        <h3 class="p-title">Pick a language <span>as the app shows it</span></h3>
+        <div class="langs" role="radiogroup" aria-label="Language">
+          {
+            languages.map((l, i) => (
+              <button
+                type="button"
+                class="lang"
+                role="radio"
+                lang={l.code}
+                aria-checked={i === 0 ? 'true' : 'false'}
+                data-lang={JSON.stringify(l)}
+              >
+                {l.name}
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="sidebar" lang="en">
+          <div class="sb-search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>
+            </svg>
+            <span class="sb-search-text">⌘K</span>
+          </div>
+          <div class="sb-item on">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M4 17l6-5-6-5M12 19h8"></path>
+            </svg>
+            <span data-word="localTerminal">{en.localTerminal}</span>
+          </div>
+          <div class="sb-item"><span class="sb-ico">◎</span><span data-word="hosts">{en.hosts}</span><span class="sb-count">24</span></div>
+          <div class="sb-item"><span class="sb-ico">❯</span><span data-word="snippets">{en.snippets}</span><span class="sb-count">61</span></div>
+          <div class="sb-item"><span class="sb-ico">$</span><span data-word="environments">{en.environments}</span><span class="sb-count">5</span></div>
+          <div class="sb-item"><span class="sb-ico">▤</span><span data-word="configFiles">{en.configFiles}</span><span class="sb-count">3</span></div>
+          <div class="sb-item"><span class="sb-ico">✎</span><span data-word="notes">{en.notes}</span><span class="sb-count">12</span></div>
+          <div class="sb-item"><span class="sb-ico">⚙</span><span data-word="settings">{en.settings}</span></div>
+          <div class="sb-btn" data-word="saveAndConnect">{en.saveAndConnect}</div>
+        </div>
+
+        <ul class="check-list p-list">
+          <li><strong>Shortcuts are yours:</strong> rebind any of them in <em>Settings › Keyboard</em>.</li>
+          <li><strong>Themes are files:</strong> drop a TOML in the themes folder and it shows under <em>Your themes</em>.</li>
+          <li><strong>Fonts and sizes</strong> apply as you change them, with no restart.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .p-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .p-grid {
+      grid-template-columns: 1.45fr 1fr;
+    }
+  }
+
+  .p-panel {
+    min-width: 0;
+    padding: var(--card-pad);
+    border-radius: 20px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .p-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .p-title span {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-left: 0.4rem;
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding: 0.45rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-card);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .swatch:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .swatch[aria-checked='true'] {
+    border-color: var(--sw-acc);
+    box-shadow: 0 0 0 1px var(--sw-acc), 0 0 20px -6px var(--sw-acc);
+    color: var(--text-primary);
+  }
+
+  .sw-chip {
+    width: 100%;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--sw-bg);
+    display: flex;
+    align-items: flex-end;
+    padding: 0.35rem;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .sw-dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .sw-dots i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .sw-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0 0.15rem;
+  }
+
+  .sw-tag {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    padding: 0 0.15rem;
+    margin-top: -0.3rem;
+  }
+
+  pre {
+    font: inherit;
+    min-height: 290px;
+    padding: 1rem 1.1rem;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  .langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .lang {
+    font: inherit;
+    font-size: 0.82rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-card);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .lang[aria-checked='true'] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #04121c;
+    font-weight: 700;
+  }
+
+  .sidebar {
+    border-radius: 14px;
+    border: 1px solid #1e2736;
+    background: #0b0f17;
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.85rem;
+    color: #b6c0cf;
+  }
+
+  .sb-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    margin-bottom: 0.35rem;
+    border-radius: 8px;
+    background: #0f1522;
+    border: 1px solid #1e2736;
+    color: #64748b;
+  }
+
+  .sb-search-text {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .sb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.42rem 0.6rem;
+    border-radius: 8px;
+  }
+
+  .sb-item.on {
+    background: rgba(56, 189, 248, 0.12);
+    color: #f1f5f9;
+  }
+
+  .sb-item.on svg {
+    color: var(--t-accent);
+  }
+
+  .sb-ico {
+    width: 13px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.8rem;
+  }
+
+  .sb-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+
+  .sb-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #fff;
+    background: var(--accent-strong);
+  }
+
+  .p-list {
+    margin-top: 0.25rem;
+  }
+</style>
+
+<script>
+  interface Theme {
+    accent: string;
+    surface: string;
+    foreground: string;
+    cursor: string;
+    palette: string[];
+  }
+
+  const root = document.documentElement;
+
+  function applyTheme(t: Theme) {
+    root.style.setProperty('--t-surface', t.surface);
+    root.style.setProperty('--t-fg', t.foreground);
+    root.style.setProperty('--t-accent', t.accent);
+    root.style.setProperty('--t-cursor', t.cursor);
+    [0, 1, 2, 3, 4, 5, 6, 8].forEach((i) => root.style.setProperty(`--t-c${i}`, t.palette[i]));
+  }
+
+  // A radiogroup: a click checks one, the arrow keys move along.
+  function radios(selector: string, pick: (el: HTMLElement) => void) {
+    const items = [...document.querySelectorAll<HTMLElement>(selector)];
+    const check = (el: HTMLElement) => {
+      items.forEach((i) => {
+        i.setAttribute('aria-checked', String(i === el));
+        i.tabIndex = i === el ? 0 : -1;
+      });
+      pick(el);
+    };
+    items.forEach((el, n) => {
+      el.tabIndex = el.getAttribute('aria-checked') === 'true' ? 0 : -1;
+      el.addEventListener('click', () => check(el));
+      el.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        const next = items[(n + step + items.length) % items.length];
+        next.focus();
+        check(next);
+      });
+    });
+  }
+
+  radios('.swatch', (el) => applyTheme(JSON.parse(el.dataset.theme!)));
+
+  const sidebar = document.querySelector<HTMLElement>('.sidebar');
+  radios('.lang', (el) => {
+    const words = JSON.parse(el.dataset.lang!);
+    if (sidebar) sidebar.lang = words.code;
+    document.querySelectorAll<HTMLElement>('[data-word]').forEach((w) => {
+      w.textContent = words[w.dataset.word!];
+    });
+  });
+</script>

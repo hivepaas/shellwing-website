@@ -1,0 +1,139 @@
+---
+// Features.astro - what an SSH client must do, done as OpenSSH does it: a grid
+// of short cards.
+
+const features = [
+  {
+    icon: 'M4 6h16M4 12h10M4 18h7',
+    title: 'Your ~/.ssh/config, as is',
+    text: 'Aliases, ProxyJump, forwards, identity files, known_hosts, agent keys, certificates and two-factor prompts. Nothing to import.',
+  },
+  {
+    icon: 'M3 5h8v14H3zM13 5h8v6h-8zM13 13h8v6h-8z',
+    title: 'Tabs and split panes',
+    text: 'Split a tab to the same host, drag tabs to reorder them, and type into every pane at once, like tmux synchronize-panes.',
+  },
+  {
+    icon: 'M4 7h6l2 2h8v10H4zM12 12v5M9.5 14.5L12 12l2.5 2.5',
+    title: 'Files over SFTP',
+    text: 'Browse, upload and download with drag and drop, rename and delete, and edit remote files in your own editor.',
+  },
+  {
+    icon: 'M4 8h11l-3-3M20 16H9l3 3',
+    title: 'Port forwarding',
+    text: 'Local, remote and SOCKS (-L, -R, -D) from the command line, a saved host, or the palette while connected.',
+  },
+  {
+    icon: 'M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4L4.2 9.7l5.4-.8z',
+    title: 'Saved hosts',
+    text: 'Groups, colors, favorites, tags, jump hosts and a command to run after connecting, in a plain hosts.toml.',
+  },
+  {
+    icon: 'M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5',
+    title: 'Reconnects on its own',
+    text: 'A dropped connection is retried with a back-off, and its port forwards come back with it.',
+  },
+  {
+    icon: 'M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM14.5 14.5L20 20',
+    title: 'Palette and find',
+    text: 'One keystroke to any host, snippet, environment or note; find in the terminal and its history.',
+  },
+  {
+    icon: 'M5 4h10l4 4v12H5zM9 12h6M9 16h6',
+    title: 'Session logs',
+    text: 'Keep what a session printed, to read later or to attach to a ticket.',
+  },
+];
+---
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">SSH, the OpenSSH way</span>
+      <h2 class="section-title">
+        <span class="text-gradient-white">Everything you expect.</span>
+        <br />
+        <span class="text-gradient-sky">Nothing to migrate.</span>
+      </h2>
+      <p class="section-desc">
+        shellwing reads the same files OpenSSH does and signs in the same ways, so your hosts are there the first time you
+        open it.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      {
+        features.map((f) => (
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d={f.icon} />
+              </svg>
+            </div>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .feature-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .feature {
+    padding: 1.75rem 1.5rem;
+    background: var(--bg-primary);
+    transition: background 0.25s ease;
+  }
+
+  .feature:hover {
+    background: var(--bg-secondary);
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-bottom: 1.1rem;
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+  }
+
+  .feature h3 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+</style>

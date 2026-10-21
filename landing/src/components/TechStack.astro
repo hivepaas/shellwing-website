@@ -1,0 +1,211 @@
+---
+// TechStack.astro - built with Rust and Zig: what each layer is, and what it
+// gives the terminal.
+
+const layers = [
+  {
+    name: 'GPUI',
+    lang: 'Rust',
+    by: 'from Zed',
+    role: 'The window, tabs, panes and every panel, drawn on the GPU by the framework the Zed editor is built on.',
+    color: 'rust',
+  },
+  {
+    name: 'libghostty-vt',
+    lang: 'Zig',
+    by: 'from Ghostty',
+    role: "The terminal itself: Ghostty's emulator core, built from source with Zig, parsing output on its own thread.",
+    color: 'zig',
+  },
+  {
+    name: 'russh',
+    lang: 'Rust',
+    by: 'pure Rust SSH',
+    role: 'SSH the way OpenSSH does it, in pure Rust: no OpenSSL to install, nothing to shell out to.',
+    color: 'rust',
+  },
+];
+
+const points = [
+  { title: 'Full refresh rate', text: "Smooth at your display's rate, even under a flood of output." },
+  { title: 'Off the UI thread', text: 'Parsing runs on its own thread, so a busy pane never stalls the window.' },
+  { title: 'Sharp at any scale', text: 'Text stays crisp on every HiDPI scale factor, on every platform.' },
+  { title: 'IME at the cursor', text: 'Input methods show the text being composed right at the cursor.' },
+];
+---
+
+<section class="section" id="built">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Built with Rust + Zig</span>
+      <h2 class="section-title">
+        <span class="text-gradient-white">Native, all the way</span>
+        <span class="text-gradient-sky"> down.</span>
+      </h2>
+      <p class="section-desc">
+        No Electron, no web view. shellwing is a Rust app on a GPU UI framework, around the terminal core of Ghostty.
+        It starts like a native app because it is one.
+      </p>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack">
+        {
+          layers.map((layer, i) => (
+            <div class:list={['layer', layer.color]} style={`--i: ${i}`}>
+              <div class="layer-head">
+                <span class="layer-name">{layer.name}</span>
+                <span class:list={['lang', layer.color]}>{layer.lang}</span>
+                <span class="layer-by">{layer.by}</span>
+              </div>
+              <p>{layer.role}</p>
+            </div>
+          ))
+        }
+        <div class="layer os">
+          <span>Metal · DirectX · Vulkan</span>
+          <span>macOS · Windows · Linux (Wayland & X11)</span>
+        </div>
+      </div>
+
+      <div class="points">
+        {
+          points.map((p) => (
+            <div class="point">
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .stack-grid {
+      grid-template-columns: 1.25fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .layer {
+    position: relative;
+    padding: 1.25rem 1.4rem;
+    border-radius: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    backdrop-filter: blur(16px);
+  }
+
+  .layer.rust {
+    box-shadow: inset 3px 0 0 #f97316;
+  }
+
+  .layer.zig {
+    box-shadow: inset 3px 0 0 #f7a41d;
+    background: linear-gradient(90deg, rgba(247, 164, 29, 0.08), var(--bg-card) 60%);
+  }
+
+  .layer-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .layer-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .lang {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .lang.rust {
+    color: #fdba74;
+    background: rgba(249, 115, 22, 0.14);
+    border: 1px solid rgba(249, 115, 22, 0.35);
+  }
+
+  .lang.zig {
+    color: #fcd34d;
+    background: rgba(247, 164, 29, 0.14);
+    border: 1px solid rgba(247, 164, 29, 0.35);
+  }
+
+  .layer-by {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .layer p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .layer.os {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: transparent;
+    border-style: dashed;
+  }
+
+  .points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .points {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .point {
+    padding: 1.25rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .point h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--accent-light);
+  }
+
+  .point p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+</style>

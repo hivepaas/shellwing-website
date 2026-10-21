@@ -1,0 +1,717 @@
+---
+// PowerTools.astro - what is kept in the vault for the work on servers: the
+// snippet library, snippets, environments, notes and config files, each a
+// card with a small picture of its window.
+
+const libraryTools = ['System', 'systemd', 'Network', 'Docker', 'Kubernetes', 'nginx', 'PostgreSQL', 'MySQL', 'Redis', 'MongoDB', 'restic', 'AWS'];
+const libraryTasks = ['Diagnostics', 'Logs', 'Maintenance', 'Deploy', 'Backup', 'Database', 'Data', 'Testing'];
+const libraryItems = [
+  { name: 'Active queries', on: true },
+  { name: 'Largest tables', on: true },
+  { name: 'Vacuum and analyze', on: false },
+  { name: 'Restore from a dump', on: false, changes: true },
+];
+---
+
+<section class="section" id="power-tools">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Power tools</span>
+      <h2 class="section-title">
+        <span class="text-gradient-white">The commands, secrets and notes</span>
+        <span class="text-gradient-sky"> your servers need.</span>
+      </h2>
+      <p class="section-desc">
+        Snippets, environments, config files and notes live in the encrypted vault, sync to your other devices, and are
+        one palette search away in any pane.
+      </p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- The snippet library -->
+      <div class="bento-card bento-span-2">
+        <div class="bento-badge-row">
+          <span class="linear-pill pill-glow">Snippet library</span>
+          <span class="badge-accent-tag">~250 commands</span>
+        </div>
+        <h3 class="bento-title">Ready commands for the whole stack.</h3>
+        <p class="bento-text">
+          The system, systemd, the network, Docker, Kubernetes, web servers, a dozen databases, backups and clouds. Pick
+          the ones you want, set their options and sudo, run them on the host or in a container. Anything that changes
+          things is typed, not run, until you press Enter; passwords come from an environment, never the command.
+        </p>
+        <div class="mock lib">
+          <div class="lib-tools">
+            {libraryTools.map((t) => <span class:list={{ on: t === 'PostgreSQL' }}>{t}</span>)}
+          </div>
+          <div class="lib-main">
+            <div class="lib-tasks">
+              {libraryTasks.map((t) => <span class:list={{ on: t === 'Diagnostics' }}>{t}</span>)}
+            </div>
+            {
+              libraryItems.map((item) => (
+                <div class="lib-row">
+                  <span class:list={['box', { on: item.on }]} />
+                  <span class="lib-name">{item.name}</span>
+                  {item.changes && <span class="warn">Makes changes</span>}
+                </div>
+              ))
+            }
+            <div class="lib-foot">
+              <span class="toggle on">sudo</span>
+              <span class="toggle">in a container</span>
+              <span class="mini-btn">Add to my snippets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Snippets -->
+      <div class="bento-card">
+        <div class="bento-badge-row">
+          <span class="linear-pill pill-glow">Snippets</span>
+        </div>
+        <h3 class="bento-title">Your commands, with blanks to fill.</h3>
+        <p class="bento-text">
+          <code>{'{{values}}'}</code> are asked when it runs. Give a snippet the environments it needs and it runs in a subshell
+          that has them, then drops them.
+        </p>
+        <div class="mock code-mock">
+          <div class="code-line">
+            <span class="kw">pg_dump</span> -U <span class="var">{'{{db_user}}'}</span> -Fc <span class="var">{'{{database}}'}</span> \
+          </div>
+          <div class="code-line">&nbsp;&nbsp;&gt; <span class="var">{'{{database}}'}</span>-$(date +%F).dump</div>
+          <div class="ask">
+            <label>db_user <span>app</span></label>
+            <label>database <span>shop<i class="caret"></i></span></label>
+          </div>
+          <div class="needs"><span class="chip env">needs pg-prod</span><span class="chip">Backup</span></div>
+        </div>
+      </div>
+
+      <!-- Environments -->
+      <div class="bento-card">
+        <div class="bento-badge-row">
+          <span class="linear-pill pill-glow">Environments</span>
+        </div>
+        <h3 class="bento-title">Secrets in the shell, only when you say.</h3>
+        <p class="bento-text">
+          Named sets of variables, pasted from a <code>.env</code>. Load one into a pane from the palette: the echo goes off,
+          the command stays out of your history, and a badge's ✕ unsets it.
+        </p>
+        <div class="mock env-mock">
+          <div class="env-head">aws-prod <span>for web-01, web-02</span></div>
+          <div class="env-row"><span>AWS_ACCESS_KEY_ID</span><span class="mask">••••••••••••</span></div>
+          <div class="env-row"><span>AWS_SECRET_ACCESS_KEY</span><span class="mask">••••••••••••</span></div>
+          <div class="env-row"><span>AWS_REGION</span><span class="mask">••••••</span></div>
+          <div class="env-foot">
+            <span class="mini-btn ghost">Paste a .env file</span>
+            <span class="mini-btn ghost">Show values · Touch ID</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="bento-card bento-span-2">
+        <div class="bento-badge-row">
+          <span class="linear-pill pill-glow">Notes</span>
+          <span class="badge-accent-tag">Markdown</span>
+        </div>
+        <h3 class="bento-title">Runbooks next to the servers they're about.</h3>
+        <p class="bento-text">
+          Markdown that renders as you type: headings, tables, task lists, code blocks. Tie a note to its hosts and the
+          palette lists it first there. A code block's <strong>Insert</strong> types it straight into the pane; mark a note
+          sensitive and it shows only once you confirm it's you.
+        </p>
+        <div class="mock note-mock">
+          <div class="note-side">
+            <span class="note-cat">Runbooks</span>
+            <span class="note-item on">db-primary: failover</span>
+            <span class="note-item">web: deploy checklist</span>
+            <span class="note-item">Rotating the TLS cert</span>
+            <span class="note-cat">Hosts</span>
+            <span class="note-item">bastion 🔒</span>
+          </div>
+          <div class="note-body">
+            <div class="md-h1">db-primary: failover</div>
+            <div class="md-alert"><b>Note</b> Promote the replica only after the primary is fenced.</div>
+            <div class="md-task done"><span class="box on"></span>Stop writes on <code>api</code></div>
+            <div class="md-task"><span class="box"></span>Promote <code>db-replica</code></div>
+            <div class="md-code">
+              <div class="md-code-bar"><span>sh</span><span class="mini-btn ghost">Copy</span><span class="mini-btn">Insert</span></div>
+              <div><span class="kw">sudo</span> -u postgres pg_ctl promote -D /var/lib/postgresql/16/main</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Config files -->
+      <div class="bento-card bento-span-2">
+        <div class="bento-badge-row">
+          <span class="linear-pill pill-glow">Config files</span>
+        </div>
+        <h3 class="bento-title">Put a kubeconfig on a host, until the tab closes.</h3>
+        <p class="bento-text">
+          Keep <code>~/.kube/config</code>, <code>~/.aws/credentials</code> or <code>~/.npmrc</code> in the vault and
+          place it from the palette. Close the tab and it's gone; the file that was there comes back. Written whole, with
+          its permissions from the start, and cleaned up on the next connect if the link dropped.
+        </p>
+        <div class="mock cfg-mock">
+          <div class="cfg-file">
+            <span class="cfg-icon">▤</span>
+            <div>
+              <div class="cfg-name">kubeconfig · prod</div>
+              <div class="cfg-path">~/.kube/config · 600</div>
+            </div>
+          </div>
+          <div class="cfg-arrow">→</div>
+          <div class="cfg-choices">
+            <div class="cfg-host">web-01</div>
+            <label class="radio on">Until the tab closes</label>
+            <label class="radio">To stay</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- All of it in the vault -->
+      <div class="bento-card vault-card">
+        <div class="vault-lock" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+          </svg>
+        </div>
+        <h3 class="bento-title">All of it, encrypted.</h3>
+        <p class="bento-text">
+          Every snippet, environment, file and note is a record in the vault, encrypted on your device and synced end to end.
+          Values stay masked until you prove it's you.
+        </p>
+        <a href="#sync" class="more">How the vault works →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mock {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    border-radius: 14px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-inset);
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  /* The library */
+  .lib {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    overflow: hidden;
+  }
+
+  .lib-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.6rem 0.4rem;
+    border-right: 1px solid var(--border-subtle);
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+  }
+
+  .lib-tools span {
+    padding: 0.18rem 0.55rem;
+    border-radius: 6px;
+  }
+
+  .lib-tools .on {
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--accent-light);
+    font-weight: 600;
+  }
+
+  .lib-main {
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .lib-tasks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .lib-tasks span {
+    font-size: 0.68rem;
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+  }
+
+  .lib-tasks .on {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #04121c;
+    font-weight: 700;
+  }
+
+  .lib-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .lib-name {
+    flex: 1;
+  }
+
+  .warn {
+    font-size: 0.68rem;
+    color: var(--accent-amber);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.08);
+    border-radius: 5px;
+    padding: 0.05rem 0.4rem;
+    white-space: nowrap;
+  }
+
+  .box {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1.5px solid #475569;
+  }
+
+  .box.on {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 2px #04121c;
+  }
+
+  .lib-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .toggle {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .toggle::before {
+    content: '';
+    width: 24px;
+    height: 14px;
+    border-radius: 999px;
+    background: #334155;
+    box-shadow: inset -10px 0 0 2px #334155, inset 0 0 0 2px #334155;
+    background-image: radial-gradient(circle at 7px 7px, #94a3b8 4px, transparent 4.5px);
+  }
+
+  .toggle.on::before {
+    background: var(--accent-strong);
+    background-image: radial-gradient(circle at 17px 7px, #fff 4px, transparent 4.5px);
+    box-shadow: none;
+  }
+
+  .mini-btn {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 7px;
+    background: var(--accent-strong);
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .mini-btn.ghost {
+    margin-left: 0;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-card);
+    font-weight: 600;
+  }
+
+  /* Snippets */
+  .code-mock {
+    padding: 0.9rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+  }
+
+  .code-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .kw {
+    color: #7dd3fc;
+  }
+
+  .var {
+    color: #c4b5fd;
+    background: rgba(167, 139, 250, 0.12);
+    border-radius: 4px;
+    padding: 0 0.15rem;
+  }
+
+  .ask {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0.9rem 0 0.75rem;
+    font-family: var(--font-sans);
+  }
+
+  .ask label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  .ask label span {
+    width: 58%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-card);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f1f5f9;
+    font-family: var(--font-mono);
+  }
+
+  .ask label:last-child span {
+    border-color: var(--accent);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 1.5px;
+    height: 0.9em;
+    margin-left: 1px;
+    vertical-align: middle;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .needs {
+    display: flex;
+    gap: 0.4rem;
+    font-family: var(--font-sans);
+  }
+
+  .chip {
+    font-size: 0.68rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+  }
+
+  .chip.env {
+    color: #6ee7b7;
+    border-color: rgba(52, 211, 153, 0.35);
+    background: rgba(52, 211, 153, 0.1);
+  }
+
+  /* Environments */
+  .env-mock {
+    padding: 0.8rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .env-head {
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 0.2rem;
+  }
+
+  .env-head span {
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: 0.4rem;
+  }
+
+  .env-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    min-width: 0;
+  }
+
+  .env-row span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mask {
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .env-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+  }
+
+  /* Notes */
+  .note-mock {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    overflow: hidden;
+  }
+
+  .note-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.75rem 0.5rem;
+    border-right: 1px solid var(--border-subtle);
+    font-size: 0.74rem;
+  }
+
+  .note-cat {
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0.4rem 0.5rem 0.15rem;
+  }
+
+  .note-item {
+    padding: 0.22rem 0.5rem;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .note-item.on {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent-light);
+  }
+
+  .note-body {
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .md-h1 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .md-alert {
+    font-size: 0.74rem;
+    padding: 0.4rem 0.6rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(56, 189, 248, 0.07);
+    border-radius: 0 6px 6px 0;
+    color: var(--text-secondary);
+  }
+
+  .md-alert b {
+    color: var(--accent-light);
+    margin-right: 0.3rem;
+  }
+
+  .md-task {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+  }
+
+  .md-task.done {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .md-code {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-subtle);
+    padding: 0.5rem 0.65rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .md-code-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 0.4rem;
+    font-family: var(--font-sans);
+    color: var(--text-muted);
+  }
+
+  .md-code-bar span:first-child {
+    margin-right: auto;
+  }
+
+  .md-code-bar .mini-btn {
+    margin-left: 0;
+    font-size: 0.64rem;
+  }
+
+  /* Config files */
+  .cfg-mock {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+  }
+
+  .cfg-file {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    background: rgba(167, 139, 250, 0.08);
+  }
+
+  .cfg-icon {
+    font-size: 1.3rem;
+    color: #c4b5fd;
+  }
+
+  .cfg-name {
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+
+  .cfg-path {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+  }
+
+  .cfg-arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+  }
+
+  .cfg-choices {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cfg-host {
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-card);
+  }
+
+  .radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .radio::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid #475569;
+  }
+
+  .radio.on {
+    color: #f1f5f9;
+  }
+
+  .radio.on::before {
+    border-color: var(--accent);
+    background: radial-gradient(circle, var(--accent) 3px, transparent 3.5px);
+  }
+
+  /* The vault card */
+  .vault-card {
+    background: linear-gradient(160deg, rgba(56, 189, 248, 0.12), var(--bg-card) 60%);
+  }
+
+  .vault-lock {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: var(--accent-light);
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    margin-bottom: 1.25rem;
+  }
+
+  .more {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .lib,
+    .note-mock {
+      grid-template-columns: 1fr;
+    }
+    .lib-tools,
+    .note-side {
+      flex-direction: row;
+      flex-wrap: wrap;
+      border-right: 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .note-cat {
+      display: none;
+    }
+  }
+</style>

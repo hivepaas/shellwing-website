@@ -1,0 +1,435 @@
+---
+// Hero.astro - what shellwing is, the way to get it, and a window of it: two
+// panes on two hosts, an environment and a config file placed, the palette.
+import TermWindow from './TermWindow.astro';
+import { GITHUB_URL } from '../data/site';
+
+const tabs = [
+  { label: 'Local terminal', kind: 'local' as const },
+  { label: 'web-01', sub: 'prod', kind: 'ssh' as const, active: true },
+  { label: 'db-primary', sub: 'via bastion', kind: 'ssh' as const },
+  { label: 'staging', sub: 'connecting…', kind: 'ssh' as const, connecting: true },
+];
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="linear-pill pill-glow hero-pill">
+      <span class="pulse"></span>
+      Open source · in active development
+    </a>
+
+    <h1 class="hero-title">
+      <span class="text-gradient-white">The SSH client that</span>
+      <br />
+      <span class="text-gradient-neon">feels native.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Tabs, split panes, SFTP, port forwarding and an encrypted vault that syncs between your devices, in a
+      GPU-rendered terminal built with <strong>Rust</strong> and <strong>Zig</strong>. Your local shell lives in
+      it too.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#get" class="btn btn-primary">
+        Get shellwing
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+      <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.168L12 18.896l-7.335 3.869 1.401-8.168L.132 9.21l8.2-1.192z"></path>
+        </svg>
+        Star on GitHub
+      </a>
+    </div>
+
+    <ul class="hero-meta">
+      <li>macOS</li>
+      <li>Windows</li>
+      <li>Linux</li>
+      <li>GPL-3.0</li>
+      <li>No account needed</li>
+    </ul>
+
+    <div class="hero-window">
+      <TermWindow
+        tabs={tabs}
+        label="shellwing's window: a tab on web-01 split into two panes, with the command palette open over them"
+      >
+        <div class="panes">
+          <div class="pane focused">
+            <div class="pane-head">
+              <span>web-01</span>
+              <span class="badge env">ENV aws-prod <b>✕</b></span>
+              <span class="badge cfg">~/.kube/config <b>✕</b></span>
+            </div>
+            <pre><span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ kubectl get pods -n shop
+<span class="c8">NAME                     READY  STATUS   AGE</span>
+api-7d9f8c6b5-x2kqp      1/1    <span class="c2">Running</span>  3h
+web-6c5d4b7f8-9hjtl      1/1    <span class="c2">Running</span>  3h
+worker-5b8c7d6f9-mzq4r   1/1    <span class="c2">Running</span>  3h
+<span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ aws s3 ls s3://shop-backups
+2026-10-20 03:00  <span class="c6">pg-2026-10-20.dump</span>
+2026-10-21 03:00  <span class="c6">pg-2026-10-21.dump</span>
+<span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ <span class="cursor"></span></pre>
+          </div>
+          <div class="pane second">
+            <div class="pane-head"><span>web-01</span><span class="pane-sub">pane 2</span></div>
+            <pre><span class="c2">deploy@web-01</span>:<span class="c4">~</span>$ journalctl -u nginx -f
+<span class="c8">Oct 21 15:02:11</span> nginx: <span class="c6">GET</span> /api/cart <span class="c2">200</span> 12ms
+<span class="c8">Oct 21 15:02:11</span> nginx: <span class="c6">GET</span> /api/me <span class="c2">200</span> 4ms
+<span class="c8">Oct 21 15:02:12</span> nginx: <span class="c5">POST</span> /api/order <span class="c2">201</span> 38ms
+<span class="c8">Oct 21 15:02:13</span> nginx: <span class="c6">GET</span> /health <span class="c2">200</span> 1ms
+<span class="c8">Oct 21 15:02:14</span> nginx: <span class="c6">GET</span> /api/cart <span class="c3">304</span> 3ms
+<span class="c8">Oct 21 15:02:15</span> nginx: <span class="c5">POST</span> /api/pay <span class="c1">502</span> 30s
+<span class="c8">Oct 21 15:02:15</span> nginx: <span class="c6">GET</span> /api/cart <span class="c2">200</span> 9ms</pre>
+          </div>
+        </div>
+
+        <div class="palette">
+          <div class="palette-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>
+            </svg>
+            <span>pg</span><span class="caret"></span>
+            <span class="palette-kbd">Ctrl+Shift+K</span>
+          </div>
+          <div class="palette-badges">
+            <span>Hosts</span><span>Recent</span><span class="on">Snippets</span><span>Environments</span><span>Notes</span>
+          </div>
+          <div class="palette-group">Snippets · PostgreSQL</div>
+          <div class="palette-item selected">
+            <span>Active queries</span><span class="hint">Enter types it</span>
+          </div>
+          <div class="palette-item"><span>Largest tables</span></div>
+          <div class="palette-item"><span>Restore from a dump</span><span class="tag warn">Makes changes</span></div>
+          <div class="palette-group">Environments</div>
+          <div class="palette-item"><span>pg-prod</span><span class="tag">3 variables</span></div>
+          <div class="palette-group">Notes</div>
+          <div class="palette-item"><span>db-primary: failover runbook</span></div>
+        </div>
+      </TermWindow>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding-top: calc(var(--header-height) + 4.5rem);
+    padding-bottom: 4rem;
+    text-align: center;
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-pill {
+    text-decoration: none;
+    margin-bottom: 1.75rem;
+  }
+
+  .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 8px rgba(56, 189, 248, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    }
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-sub {
+    max-width: 680px;
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-sub strong {
+    color: var(--text-primary);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-meta {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.25rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4rem;
+  }
+
+  .hero-meta li + li::before {
+    content: '·';
+    margin-right: 1.25rem;
+    color: #334155;
+  }
+
+  .hero-window {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .panes {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 440px;
+  }
+
+  .pane {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .pane + .pane {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .pane-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+    background: rgba(0, 0, 0, 0.18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .pane.focused .pane-head {
+    box-shadow: inset 0 -1px 0 var(--t-accent);
+  }
+
+  .pane-sub {
+    opacity: 0.6;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .badge b {
+    font-weight: 400;
+    opacity: 0.6;
+  }
+
+  .badge.env {
+    background: rgba(52, 211, 153, 0.14);
+    color: #6ee7b7;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+  }
+
+  .badge.cfg {
+    background: rgba(167, 139, 250, 0.14);
+    color: #c4b5fd;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+  }
+
+  pre {
+    font: inherit;
+    padding: 0.9rem 1rem;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  .palette {
+    position: absolute;
+    top: 3.25rem;
+    left: 50%;
+    width: min(440px, 88%);
+    transform: translateX(-30%);
+    background: rgba(15, 21, 34, 0.96);
+    border: 1px solid #2a3547;
+    border-radius: 12px;
+    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.8);
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    padding-bottom: 0.4rem;
+    backdrop-filter: blur(12px);
+    animation: palette-in 0.6s 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes palette-in {
+    from {
+      opacity: 0;
+      transform: translateX(-30%) translateY(-8px) scale(0.98);
+    }
+  }
+
+  .palette-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid #1e2736;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+  }
+
+  .palette-input svg {
+    color: #8a96aa;
+  }
+
+  .caret {
+    width: 1.5px;
+    height: 1em;
+    background: var(--t-accent);
+    margin-left: -0.35rem;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .palette-kbd {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: #8a96aa;
+    border: 1px solid #2a3547;
+    border-radius: 5px;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .palette-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.6rem 0.9rem 0.3rem;
+  }
+
+  .palette-badges span {
+    font-size: 0.68rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid #2a3547;
+    color: #8a96aa;
+  }
+
+  .palette-badges .on {
+    color: #0b0f17;
+    background: var(--t-accent);
+    border-color: var(--t-accent);
+    font-weight: 600;
+  }
+
+  .palette-group {
+    padding: 0.55rem 0.9rem 0.2rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .palette-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0 0.4rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 7px;
+  }
+
+  .palette-item.selected {
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    box-shadow: inset 2px 0 0 var(--t-accent);
+  }
+
+  .hint {
+    font-size: 0.68rem;
+    color: #8a96aa;
+  }
+
+  .tag {
+    font-size: 0.66rem;
+    color: #8a96aa;
+    white-space: nowrap;
+  }
+
+  .tag.warn {
+    color: #fbbf24;
+  }
+
+  @media (max-width: 860px) {
+    .panes {
+      grid-template-columns: 1fr;
+    }
+    .pane.second {
+      display: none;
+    }
+    .palette {
+      transform: translateX(-50%);
+      top: auto;
+      bottom: 0.75rem;
+      animation: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: calc(var(--header-height) + 2.5rem);
+    }
+    .hero-meta {
+      margin-bottom: 2.5rem;
+    }
+    .panes {
+      min-height: 420px;
+      font-size: 0.7rem;
+    }
+    .badge.cfg {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .palette,
+    .pulse,
+    .caret {
+      animation: none;
+    }
+  }
+</style>

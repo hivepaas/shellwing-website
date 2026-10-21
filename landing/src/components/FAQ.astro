@@ -1,0 +1,86 @@
+---
+// FAQ.astro - the questions in data/faq.ts, each a <details>
+import { faq } from '../data/faq';
+---
+
+<section class="section" id="faq">
+  <div class="container faq-container">
+    <div class="section-header">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title"><span class="text-gradient-white">Questions, answered.</span></h2>
+    </div>
+
+    <div class="faq-list">
+      {
+        faq.map((item, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary>
+              {item.question}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </summary>
+            <p>{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-container {
+    max-width: 860px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .faq-item {
+    border-radius: 16px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-card);
+    transition: border-color 0.2s ease;
+  }
+
+  .faq-item[open] {
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem;
+    font-weight: 600;
+    font-size: 1.02rem;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary svg {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.25s ease;
+  }
+
+  .faq-item[open] summary svg {
+    transform: rotate(180deg);
+    color: var(--accent);
+  }
+
+  .faq-item p {
+    padding: 0 1.4rem 1.3rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+</style>

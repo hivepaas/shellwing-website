@@ -1,0 +1,114 @@
+---
+// LocalTerminal.astro - shellwing as the everyday terminal: a shell on this
+// computer in a tab, beside the SSH ones.
+import TermWindow from './TermWindow.astro';
+
+const tabs = [
+  { label: 'Local terminal', kind: 'local' as const, active: true },
+  { label: 'web-01', sub: 'prod', kind: 'ssh' as const },
+  { label: 'db-primary', kind: 'ssh' as const },
+];
+---
+
+<section class="section" id="local">
+  <div class="container local-grid">
+    <div class="local-copy">
+      <span class="section-tag">Your everyday terminal</span>
+      <h2 class="local-title">
+        <span class="text-gradient-white">One app for your machine</span>
+        <span class="text-gradient-sky"> and your servers.</span>
+      </h2>
+      <p class="local-desc">
+        A local terminal opens in a tab beside the SSH ones, with the same speed, themes and shortcuts. Leave your old
+        terminal app closed: shellwing does both.
+      </p>
+
+      <ul class="check-list">
+        <li>
+          <strong>Your own shell.</strong> <code>$SHELL</code> (a login shell on macOS), PowerShell 7 on Windows, or any
+          other with <code>local_shell</code>: fish, nu, zsh with your config.
+        </li>
+        <li>
+          <strong>The same tools as over SSH.</strong> Split panes, find, snippets and typing into every pane work the
+          same on this computer.
+        </li>
+        <li>
+          <strong>A real terminal.</strong> Truecolor, <code>xterm-256color</code> and Ghostty's emulator: vim, htop and
+          tmux look as they should.
+        </li>
+        <li>
+          <strong>From the command line.</strong> <code>shellwing --local</code> opens straight into a shell; <code
+            >shellwing user@host</code
+          > into a host.
+        </li>
+      </ul>
+    </div>
+
+    <div class="local-visual">
+      <TermWindow tabs={tabs} label="A shellwing window with a local terminal tab open beside two SSH tabs">
+        <pre><span class="c8">~/code/shop</span> <span class="c5">main</span> <span class="c2">❯</span> git pull --rebase
+Successfully rebased and updated refs/heads/main.
+<span class="c8">~/code/shop</span> <span class="c5">main</span> <span class="c2">❯</span> make test
+<span class="c6">▸</span> api      <span class="c2">142 passed</span>
+<span class="c6">▸</span> web      <span class="c2">88 passed</span>
+<span class="c6">▸</span> worker   <span class="c2">37 passed</span> <span class="c3">1 skipped</span>
+<span class="c8">~/code/shop</span> <span class="c5">main</span> <span class="c2">❯</span> ssh-add -l
+256 SHA256:Xq3…Pn8 you@laptop <span class="c8">(ED25519)</span>
+<span class="c8">~/code/shop</span> <span class="c5">main</span> <span class="c2">❯</span> <span class="cursor"></span></pre>
+      </TermWindow>
+    </div>
+  </div>
+</section>
+
+<style>
+  .local-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .local-grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+    }
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.85rem;
+  }
+
+  .local-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.1rem;
+  }
+
+  .local-desc {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .local-visual {
+    min-width: 0;
+  }
+
+  pre {
+    font: inherit;
+    padding: 1rem 1.1rem;
+    min-height: 300px;
+    white-space: pre;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// Footer.astro - the sections again, the project's links, the license
+import { GITHUB_URL, CONFIG_DOC_URL, PLATFORMS_DOC_URL, LICENSE_URL, CONTRIBUTING_URL, HIVEPAAS_URL } from '../data/site';
+
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      { href: '/#features', label: 'Features' },
+      { href: '/#local', label: 'Local terminal' },
+      { href: '/#power-tools', label: 'Power tools' },
+      { href: '/#sync', label: 'Vault & Sync' },
+      { href: '/#personalize', label: 'Themes & languages' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { href: PLATFORMS_DOC_URL, label: 'Build from source' },
+      { href: CONFIG_DOC_URL, label: 'Configuration' },
+      { href: '/#comparison', label: 'Compare' },
+      { href: '/#faq', label: 'FAQ' },
+    ],
+  },
+  {
+    title: 'Open source',
+    links: [
+      { href: GITHUB_URL, label: 'GitHub' },
+      { href: CONTRIBUTING_URL, label: 'Contributing' },
+      { href: LICENSE_URL, label: 'License (GPL-3.0)' },
+      { href: HIVEPAAS_URL, label: 'HivePaaS' },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand-logo" aria-label="shellwing home">
+          <img src="/logo.svg" width="28" height="28" alt="" />
+          <span>shell<span class="brand-highlight">wing</span></span>
+        </a>
+        <p>A fast, native SSH client for macOS, Windows and Linux. Built with Rust and Zig.</p>
+      </div>
+
+      {
+        columns.map((col) => (
+          <div class="footer-col">
+            <h3>{col.title}</h3>
+            <ul>
+              {col.links.map((link) => {
+                const external = link.href.startsWith('http');
+                return (
+                  <li>
+                    <a href={link.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} HivePaaS. shellwing is free software under the GPL-3.0.</span>
+      <span>The shellwing name and logo are trademarks of HivePaaS.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border-subtle);
+    padding: 4rem 0 2.5rem;
+    background: linear-gradient(180deg, transparent, rgba(56, 189, 248, 0.03));
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .footer-brand {
+      grid-column: span 3;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .footer-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+    .footer-brand {
+      grid-column: auto;
+    }
+  }
+
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--text-primary);
+  }
+
+  .brand-highlight {
+    color: var(--accent);
+  }
+
+  .footer-brand p {
+    margin-top: 1rem;
+    max-width: 320px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .footer-col h3 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .footer-col a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .footer-col a:hover {
+    color: var(--text-primary);
+  }
+
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+</style>

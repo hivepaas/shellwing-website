@@ -1,0 +1,63 @@
+---
+// index.astro - shellwing's landing page
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import TechStack from '../components/TechStack.astro';
+import Features from '../components/Features.astro';
+import LocalTerminal from '../components/LocalTerminal.astro';
+import PowerTools from '../components/PowerTools.astro';
+import VaultSync from '../components/VaultSync.astro';
+import Personalize from '../components/Personalize.astro';
+import Comparison from '../components/Comparison.astro';
+import FAQ from '../components/FAQ.astro';
+import GetStarted from '../components/GetStarted.astro';
+import { faq } from '../data/faq';
+import { SITE_URL, GITHUB_URL } from '../data/site';
+
+const pageTitle = 'shellwing — the SSH client that feels native';
+const pageDescription =
+  'A fast, native SSH client and terminal for macOS, Windows and Linux, built with Rust and Zig. Tabs, split panes, SFTP, port forwarding, snippets, environments, notes and an encrypted vault that syncs.';
+const siteUrl = `${SITE_URL}/`;
+const ogImage = new URL('/og-image.png', siteUrl).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'shellwing',
+  url: siteUrl,
+  description: pageDescription,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'macOS, Windows, Linux',
+  license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+  image: ogImage,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  sameAs: [GITHUB_URL],
+};
+const faqData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  path="/"
+  keywords="SSH client, terminal, Rust, Zig, Ghostty, GPUI, SFTP, port forwarding, snippets, Termius alternative, open source SSH client, shellwing"
+  jsonLd={[structuredData, faqData]}
+>
+  <Hero />
+  <TechStack />
+  <Features />
+  <LocalTerminal />
+  <PowerTools />
+  <VaultSync />
+  <Personalize />
+  <Comparison />
+  <FAQ />
+  <GetStarted />
+</BaseLayout>

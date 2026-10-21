@@ -1,0 +1,206 @@
+---
+// Comparison.astro - shellwing beside the two usual ways: a terminal app with
+// OpenSSH, and an SSH client built on Electron. Only kinds of tools, no
+// product's name: what is common among them, not one app's features.
+
+type Mark = 'yes' | 'no' | 'some';
+
+interface Row {
+  feature: string;
+  shellwing: Mark;
+  terminal: Mark;
+  electron: Mark;
+  /** For a "some": what it depends on. */
+  note?: string;
+}
+
+const rows: Row[] = [
+  { feature: 'Native app, GPU-rendered', shellwing: 'yes', terminal: 'some', electron: 'no', note: 'Electron draws through Chromium' },
+  { feature: 'Reads ~/.ssh/config as is', shellwing: 'yes', terminal: 'yes', electron: 'some' },
+  { feature: 'Your local shell in the same window', shellwing: 'yes', terminal: 'yes', electron: 'some' },
+  { feature: 'Saved hosts with groups, tags and colors', shellwing: 'yes', terminal: 'no', electron: 'yes' },
+  { feature: 'SFTP browser and port forwards built in', shellwing: 'yes', terminal: 'no', electron: 'yes' },
+  { feature: 'Snippets, and a library of ~250 ready commands', shellwing: 'yes', terminal: 'no', electron: 'some' },
+  { feature: 'Environments loaded into a shell on demand', shellwing: 'yes', terminal: 'no', electron: 'no' },
+  { feature: 'Config files placed until the tab closes', shellwing: 'yes', terminal: 'no', electron: 'no' },
+  { feature: 'Markdown notes tied to hosts', shellwing: 'yes', terminal: 'no', electron: 'some' },
+  { feature: 'End-to-end encrypted sync through your own storage', shellwing: 'yes', terminal: 'no', electron: 'some' },
+  { feature: 'Open source', shellwing: 'yes', terminal: 'some', electron: 'some' },
+];
+
+const columns = [
+  { key: 'shellwing', label: 'shellwing' },
+  { key: 'terminal', label: 'Terminal app + ssh' },
+  { key: 'electron', label: 'Electron SSH clients' },
+] as const;
+
+const labels: Record<Mark, string> = { yes: 'Yes', no: 'No', some: 'Some' };
+---
+
+<section class="section" id="comparison">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Compare</span>
+      <h2 class="section-title">
+        <span class="text-gradient-white">The speed of a terminal.</span>
+        <br />
+        <span class="text-gradient-sky">The tools of an SSH client.</span>
+      </h2>
+      <p class="section-desc">
+        A terminal app with OpenSSH is fast but bare; an Electron client has the tools but runs in a browser engine.
+        shellwing is both, natively.
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Feature</span></th>
+            {columns.map((c) => <th scope="col" class:list={{ us: c.key === 'shellwing' }}>{c.label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr>
+                <th scope="row">
+                  {row.feature}
+                  {row.note && <span class="note">{row.note}</span>}
+                </th>
+                {columns.map((c) => (
+                  <td class:list={{ us: c.key === 'shellwing' }}>
+                    <span class:list={['mark', row[c.key]]}>
+                      {row[c.key] === 'yes' && (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                          <path d="M5 12.5l4.5 4.5L19 7.5" />
+                        </svg>
+                      )}
+                      {row[c.key] === 'no' && (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                          <path d="M6 6l12 12M18 6L6 18" />
+                        </svg>
+                      )}
+                      {row[c.key] === 'some' && <span aria-hidden="true">~</span>}
+                      <span class="visually-hidden">{labels[row[c.key]]}</span>
+                    </span>
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">
+      <span class="mark some" aria-hidden="true">~</span> Some: depends on the app. Electron clients and terminal apps differ
+      a lot from one to the next; this is what's common among them, not any one product.
+    </p>
+  </div>
+</section>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  th,
+  td {
+    padding: 0.95rem 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  thead th {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-align: center;
+    padding-top: 1.25rem;
+  }
+
+  thead th.us {
+    color: var(--accent-light);
+    font-size: 1rem;
+  }
+
+  tbody th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .note {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 0.15rem;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  .us {
+    background: rgba(56, 189, 248, 0.06);
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-weight: 800;
+  }
+
+  .mark.yes {
+    color: var(--accent-emerald);
+    background: rgba(52, 211, 153, 0.12);
+  }
+
+  td.us .mark.yes {
+    color: #04121c;
+    background: var(--accent);
+  }
+
+  .mark.no {
+    color: #64748b;
+  }
+
+  .mark.some {
+    color: var(--accent-amber);
+    background: rgba(251, 191, 36, 0.1);
+  }
+
+  .footnote {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .footnote .mark {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+  }
+</style>
