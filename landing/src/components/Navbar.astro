@@ -45,7 +45,7 @@ const links = [
           <span class="social-label">GitHub</span>
         </a>
 
-        <a href="/#get" class="btn btn-primary btn-sm">Get shellwing</a>
+        <a href="/#get" class="btn btn-primary btn-sm">Download</a>
       </div>
 
       <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -61,7 +61,7 @@ const links = [
   <div class="mobile-menu" id="mobileMenu">
     {links.map((link) => <a href={link.href} class="mobile-link">{link.label}</a>)}
     <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="mobile-link">GitHub</a>
-    <a href="/#get" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Get shellwing</a>
+    <a href="/#get" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Download</a>
   </div>
 </header>
 

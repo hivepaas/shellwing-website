@@ -3,6 +3,7 @@
 // panes on two hosts, an environment and a config file placed, the palette.
 import TermWindow from './TermWindow.astro';
 import { GITHUB_URL } from '../data/site';
+import { VERSION } from '../data/downloads';
 
 const tabs = [
   { label: 'Local terminal', kind: 'local' as const },
@@ -14,9 +15,9 @@ const tabs = [
 
 <section class="hero">
   <div class="container hero-inner">
-    <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="linear-pill pill-glow hero-pill">
+    <a href="#get" class="linear-pill pill-glow hero-pill">
       <span class="pulse"></span>
-      Open source · in active development
+      shellwing {VERSION} is out · free and open source
     </a>
 
     <h1 class="hero-title">
@@ -33,7 +34,7 @@ const tabs = [
 
     <div class="hero-actions">
       <a href="#get" class="btn btn-primary">
-        Get shellwing
+        Download
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M5 12h14M13 6l6 6-6 6"></path>
         </svg>

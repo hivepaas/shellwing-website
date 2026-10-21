@@ -16,5 +16,4 @@ yarn lint
   `src/data/themes.json`.
 - **Images.** `cd landing && node og/render.mjs` renders `og/og-image.svg` to
   `public/og-image.png`, and the logo to the favicons.
-- **Release.** A tag `vX.Y.Z` builds the image (nginx serving the static site on
-  3200) and pushes it to `ghcr.io/hivepaas/shellwing-website`.
+- **Release.** A tag `vX.Y.Z` builds the image (nginx serving the static site on 3200) and pushes it to `ghcr.io/hivepaas/shellwing-website`.

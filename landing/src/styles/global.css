@@ -65,6 +65,8 @@
 }
 
 html {
+  /* Dark scrollbars and form controls: the page is dark only. */
+  color-scheme: dark;
   font-family: var(--font-sans);
   background-color: var(--bg-black);
   color: var(--text-primary);

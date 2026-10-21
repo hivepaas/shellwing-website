@@ -13,9 +13,9 @@ export const faq: FaqItem[] = [
       'Yes. shellwing is free software under the GPL-3.0. Every feature on this page works without an account, and syncing through storage of your own (a synced folder, WebDAV, S3 or a Git repository) is free and has no limits.',
   },
   {
-    question: 'When can I download it?',
+    question: 'How do I install it, and how does it update?',
     answer:
-      'shellwing is in active development and has no release yet. You can build it from source today on macOS, Windows and Linux: it needs Rust 1.95+ and Zig 0.16. Star the repository on GitHub to hear about the first release.',
+      'Download it for your system above: a .dmg for macOS, an installer for Windows, an AppImage or a .deb for Linux. The app tells you when a newer version is out, and the .dmg app, the Windows installer and the AppImage update themselves when you say so. The releases are not signed with an Apple or Windows certificate yet, so the first launch asks you to allow it once.',
   },
   {
     question: 'Why Rust and Zig?',
