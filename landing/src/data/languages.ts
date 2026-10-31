@@ -53,8 +53,13 @@ export const languages: Language[] = [
   ),
   row(
     'zh',
-    '中文',
+    '简体中文',
     '本地终端|主机|代码片段|环境|配置文件|笔记|设置|保存并连接'
+  ),
+  row(
+    'zh-Hant',
+    '繁體中文',
+    '本機終端機|主機|程式碼片段|環境|設定檔|筆記|設定|儲存並連線'
   ),
   row(
     'ja',
@@ -83,12 +88,32 @@ export const languages: Language[] = [
   ),
   row(
     'pt',
-    'Português',
+    'Português (Brasil)',
     'Terminal local|Servidores|Trechos|Ambientes|Arquivos de configuração|Notas|Configurações|Salvar e conectar'
   ),
   row(
     'ru',
     'Русский',
     'Локальный терминал|Хосты|Сниппеты|Окружения|Файлы конфигурации|Заметки|Настройки|Сохранить и подключиться'
+  ),
+  row(
+    'uk',
+    'Українська',
+    'Локальний термінал|Хости|Сніпети|Середовища|Файли конфігурації|Нотатки|Налаштування|Зберегти та підключитися'
+  ),
+  row(
+    'it',
+    'Italiano',
+    'Terminale locale|Host|Snippet|Ambienti|File di configurazione|Note|Impostazioni|Salva e connetti'
+  ),
+  row(
+    'id',
+    'Bahasa Indonesia',
+    'Terminal lokal|Host|Snippet|Lingkungan|Berkas konfigurasi|Catatan|Pengaturan|Simpan dan hubungkan'
+  ),
+  row(
+    'tr',
+    'Türkçe',
+    'Yerel terminal|Ana makineler|Kod parçacıkları|Ortamlar|Yapılandırma dosyaları|Notlar|Ayarlar|Kaydet ve bağlan'
   ),
 ];
