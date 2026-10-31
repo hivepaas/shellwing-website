@@ -15,7 +15,7 @@ export const faq: FaqItem[] = [
   {
     question: 'How do I install it, and how does it update?',
     answer:
-      'Download it for your system above: a .dmg for macOS, an installer for Windows, an AppImage or a .deb for Linux. The app tells you when a newer version is out, and the .dmg app, the Windows installer and the AppImage update themselves when you say so. The releases are not signed with an Apple or Windows certificate yet, so the first launch asks you to allow it once.',
+      'Download it for your system above: a .dmg for macOS, an installer for Windows, an AppImage, a .deb or an .rpm for Linux. The app tells you when a newer version is out. The .dmg app, the Windows installer and the AppImage update themselves when you say so; for a .deb or an .rpm, the app shows the commands. The macOS app is signed and notarized by Apple, so macOS only asks once whether to open an app from the internet. The Windows installer is not signed yet, so SmartScreen asks you to allow it the first time.',
   },
   {
     question: 'Why Rust and Zig?',
@@ -45,6 +45,6 @@ export const faq: FaqItem[] = [
   {
     question: 'Is there a mobile app?',
     answer:
-      'Not yet. The core of shellwing has no UI and already builds for iOS and Android, so mobile apps can follow; the desktop app comes first.',
+      'Coming soon, for iOS and Android, on the same core as the desktop app.',
   },
 ];
