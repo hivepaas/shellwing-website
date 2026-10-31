@@ -30,12 +30,12 @@ export const faq: FaqItem[] = [
   {
     question: 'Do I have to move my hosts over?',
     answer:
-      'No. shellwing reads ~/.ssh/config as OpenSSH does: aliases, ProxyJump, forwards, identity files, known_hosts, the agent and certificates. Saved hosts in hosts.toml add groups, colors, tags and more on top.',
+      'No. shellwing reads ~/.ssh/config as OpenSSH does: aliases, Match blocks, ProxyJump, ProxyCommand, forwards, identity files, known_hosts, agents such as 1Password or Secretive, and certificates. Saved hosts in hosts.toml add groups, colors, tags and more on top.',
   },
   {
     question: 'Where are my passwords and keys kept?',
     answer:
-      'In the vault, an encrypted file on your device, unlocked through the system keychain, Windows Hello, Touch ID or a passphrase. When it syncs, it is encrypted end to end before it leaves the device: the storage it syncs through sees only ciphertext. A recovery key always opens it.',
+      'In the vault, an encrypted file on your device, unlocked through the system keychain, Windows Hello, Touch ID or a passphrase. When it syncs, it is encrypted end to end before it leaves the device: the storage it syncs through sees only ciphertext. A recovery key always opens it. You can also have shellwing hide its windows when you are away, until your system says it is you.',
   },
   {
     question: 'Are environments safe to load on a server?',
