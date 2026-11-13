@@ -67,6 +67,8 @@ export const systems: Os[] = [
     ],
     firstRun:
       'Signed and notarized by Apple. macOS asks once whether to open an app downloaded from the internet: choose Open.',
+    commands: `# Or with Homebrew
+brew install --cask hivepaas/tap/shellwing`,
   },
   {
     id: 'windows',
