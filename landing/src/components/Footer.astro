@@ -1,10 +1,13 @@
 ---
 // Footer.astro - the sections again, the project's links, the license
-import { GITHUB_URL, CONFIG_DOC_URL, PLATFORMS_DOC_URL, LICENSE_URL, CONTRIBUTING_URL, HIVEPAAS_URL } from '../data/site';
+import { PRODUCTS, PRODUCT_ID, GITHUB_URL, CONFIG_DOC_URL, PLATFORMS_DOC_URL, LICENSE_URL, CONTRIBUTING_URL } from '../data/site';
+
+// The Products column shows the hive's other apps, not this one.
+const others = PRODUCTS.filter((product) => product.id !== PRODUCT_ID);
 
 const columns = [
   {
-    title: 'Product',
+    title: 'shellwing',
     links: [
       { href: '/#features', label: 'Features' },
       { href: '/#local', label: 'Local terminal' },
@@ -12,6 +15,14 @@ const columns = [
       { href: '/#sync', label: 'Vault & Sync' },
       { href: '/#personalize', label: 'Themes & languages' },
     ],
+  },
+  {
+    title: 'Products',
+    links: others.map((product) => ({
+      href: product.href,
+      label: product.name,
+      sub: product.tagline,
+    })),
   },
   {
     title: 'Resources',
@@ -28,7 +39,6 @@ const columns = [
       { href: GITHUB_URL, label: 'GitHub' },
       { href: CONTRIBUTING_URL, label: 'Contributing' },
       { href: LICENSE_URL, label: 'License (GPL-3.0)' },
-      { href: HIVEPAAS_URL, label: 'HivePaaS' },
     ],
   },
 ];
@@ -56,8 +66,13 @@ const year = new Date().getFullYear();
                 const external = link.href.startsWith('http');
                 return (
                   <li>
-                    <a href={link.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    <a
+                      href={link.href}
+                      class={link.sub ? 'footer-product' : undefined}
+                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
                       {link.label}
+                      {link.sub && <span class="footer-sub">{link.sub}</span>}
                     </a>
                   </li>
                 );
@@ -101,7 +116,8 @@ const year = new Date().getFullYear();
 
   @media (min-width: 960px) {
     .footer-grid {
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-columns: 1.7fr repeat(4, 1fr);
+      gap: 2rem;
     }
     .footer-brand {
       grid-column: auto;
@@ -155,6 +171,20 @@ const year = new Date().getFullYear();
 
   .footer-col a:hover {
     color: var(--text-primary);
+  }
+
+  /* An app's name with what it is under it */
+  .footer-product {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-weight: 600;
+  }
+
+  .footer-sub {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 400;
   }
 
   .footer-bottom {
