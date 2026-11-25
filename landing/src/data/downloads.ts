@@ -3,7 +3,7 @@
 
 import { GITHUB_URL } from './site';
 
-export const VERSION = '0.3.0';
+export const VERSION = '0.4.0';
 export const RELEASE_URL = `${GITHUB_URL}/releases/tag/v${VERSION}`;
 export const RELEASES_URL = `${GITHUB_URL}/releases`;
 
