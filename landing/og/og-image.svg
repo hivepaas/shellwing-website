@@ -32,8 +32,8 @@
     <text x="96" y="50" font-family="Inter Display, Inter, sans-serif" font-size="40" font-weight="800" fill="#ffffff">shell<tspan fill="#38bdf8">wing</tspan></text>
   </g>
 
-  <text x="80" y="268" font-family="Inter Display, Inter, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="#ffffff">The SSH client that</text>
-  <text x="80" y="352" font-family="Inter Display, Inter, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="url(#title)">feels native.</text>
+  <text x="80" y="268" font-family="Inter Display, Inter, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="#ffffff">The SSH client that lets AI</text>
+  <text x="80" y="352" font-family="Inter Display, Inter, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="url(#title)">get your work done.</text>
 
   <text x="80" y="420" font-family="Inter, sans-serif" font-size="27" fill="#94a3b8">Tabs, panes, SFTP, snippets and a synced vault,</text>
   <text x="80" y="456" font-family="Inter, sans-serif" font-size="27" fill="#94a3b8">in a GPU-rendered terminal built with Rust and Zig.</text>
