@@ -2,6 +2,7 @@
 // index.astro - shellwing's landing page
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import AiAccess from '../components/AiAccess.astro';
 import TechStack from '../components/TechStack.astro';
 import Features from '../components/Features.astro';
 import LocalTerminal from '../components/LocalTerminal.astro';
@@ -14,9 +15,9 @@ import GetStarted from '../components/GetStarted.astro';
 import { faq } from '../data/faq';
 import { SITE_URL, GITHUB_URL } from '../data/site';
 
-const pageTitle = 'shellwing — the SSH client that feels native';
+const pageTitle = 'shellwing — the SSH client that lets AI get your work done';
 const pageDescription =
-  'A fast, native SSH client and terminal for macOS, Windows and Linux, built with Rust and Zig. Tabs, split panes, SFTP, port forwarding, snippets, environments, notes and an encrypted vault that syncs.';
+  'A native SSH client for macOS, Windows and Linux that lets AI agents such as Claude Code, Codex and Cursor work on your servers over MCP, without ever seeing a key: risky commands wait for you. Built with Rust and Zig, with tabs, split panes, SFTP, port forwarding, snippets, notes and an encrypted vault that syncs.';
 const siteUrl = `${SITE_URL}/`;
 const ogImage = new URL('/og-image.png', siteUrl).href;
 const structuredData = {
@@ -47,10 +48,11 @@ const faqData = {
   title={pageTitle}
   description={pageDescription}
   path="/"
-  keywords="SSH client, terminal, Rust, Zig, Ghostty, GPUI, SFTP, port forwarding, snippets, Termius alternative, open source SSH client, shellwing"
+  keywords="SSH client, AI agents, MCP, Model Context Protocol, Claude Code, Codex, terminal, Rust, Zig, Ghostty, GPUI, SFTP, port forwarding, snippets, Termius alternative, open source SSH client, shellwing"
   jsonLd={[structuredData, faqData]}
 >
   <Hero />
+  <AiAccess />
   <TechStack />
   <Features />
   <LocalTerminal />

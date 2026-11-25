@@ -1,0 +1,393 @@
+---
+// AiAccess.astro - AI agents on your servers through shellwing: what they may
+// do, what waits for you, and a picture of AI activity with a command waiting.
+
+const clients = [
+  'Claude Code',
+  'Claude Desktop',
+  'Codex CLI',
+  'Cursor',
+  'VS Code',
+  'Windsurf',
+  'Zed',
+  'Gemini CLI',
+  'Cline',
+];
+
+const rights = ['Run commands', 'Read files', 'Write files', 'Read notes', 'Add to notes', 'Use snippets'];
+---
+
+<section class="section" id="ai">
+  <div class="container ai-grid">
+    <div class="ai-copy">
+      <span class="section-tag">AI access</span>
+      <h2 class="ai-title">
+        <span class="text-gradient-white">Hand the work to your AI agent.</span>
+        <span class="text-gradient-violet"> Keep the keys and the last word.</span>
+      </h2>
+      <p class="ai-desc">
+        Claude Code, Codex, Cursor and other agents reach the servers you give them through shellwing, over the Model
+        Context Protocol. They run commands, read logs and fix configs; shellwing signs in for them, so an agent never
+        sees a key, a password or a passphrase.
+      </p>
+      <ul class="check-list">
+        <li>
+          <strong>Give hosts, not credentials.</strong> Tick the hosts, for how long, and what the agent may do there:
+          run commands, read or write files, read your notes, use your snippets. Pause or take any of it back at once.
+        </li>
+        <li>
+          <strong>Risky commands wait for you.</strong> <code>rm -rf</code>, <code>systemctl stop</code>,
+          <code>drop</code> and the rest of your list wait until you allow them. Or have every command ask, or let a
+          host run freely.
+        </li>
+        <li>
+          <strong>Watch it work.</strong> AI activity keeps every command and what it printed. Given through a tab, an
+          agent types into a terminal you see, as you would.
+        </li>
+        <li>
+          <strong>Your runbooks are its context.</strong> It reads your notes about a host and runs the snippets you
+          already trust, filling in only safe values. What it found, it adds to a note for you to keep.
+        </li>
+        <li>
+          <strong>Secrets stay sealed.</strong> A snippet that needs your API keys runs with their values sent by
+          shellwing. The agent never sees them, and every such run waits for you.
+        </li>
+      </ul>
+      <p class="ai-clients">
+        Works with {clients.join(', ')}, and any client that speaks MCP.
+      </p>
+    </div>
+
+    <div class="ai-visual" aria-hidden="true">
+      <div class="agent">
+        <div class="agent-head">
+          <span class="agent-dot"></span>
+          Claude Code
+        </div>
+        <p class="agent-ask">&gt; The checkout on web-01 returns 502s. Find out why and fix it.</p>
+        <ul class="agent-steps">
+          <li><span class="tool">list_notes</span> web-01: <em>checkout runbook</em></li>
+          <li><span class="tool">run</span> journalctl -u payments -n 50</li>
+          <li><span class="tool">read_file</span> /etc/payments/env</li>
+          <li><span class="tool">run</span> sudo systemctl restart payments</li>
+        </ul>
+      </div>
+
+      <div class="flow">
+        <span class="flow-line"></span>
+        <span class="through">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+          </svg>
+          shellwing signs in · no key leaves the vault
+        </span>
+        <span class="flow-line"></span>
+      </div>
+
+      <div class="activity">
+        <div class="activity-head">
+          <span>AI activity</span>
+          <span class="activity-host">web-01</span>
+        </div>
+        <div class="row done"><span class="ok">exit 0</span><code>journalctl -u payments -n 50</code></div>
+        <div class="row done"><span class="ok">read</span><code>/etc/payments/env</code></div>
+        <div class="row waiting">
+          <div class="waiting-head">
+            <span class="warn">waiting for you</span>
+            <code>sudo systemctl restart payments</code>
+          </div>
+          <p class="waiting-why">It has <b>systemctl restart</b>, from the risky list.</p>
+          <div class="waiting-actions">
+            <span class="act primary">Run it</span>
+            <span class="act">Refuse it</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rights">
+        {rights.map((r) => <span class="right">{r}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .ai-grid {
+      grid-template-columns: 1.05fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-violet);
+    margin-bottom: 0.85rem;
+  }
+
+  .ai-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.1rem;
+  }
+
+  .text-gradient-violet {
+    background: linear-gradient(135deg, #c4b5fd 0%, var(--accent-violet) 45%, #818cf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .ai-desc {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .check-list code {
+    font-size: 0.85em;
+    padding: 0.05rem 0.35rem;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary, #e2e8f0);
+  }
+
+  .ai-clients {
+    margin-top: 1.75rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .ai-visual {
+    padding: 1.75rem;
+    border-radius: 24px;
+    border: 1px solid var(--border-card);
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, rgba(167, 139, 250, 0.12), transparent),
+      var(--bg-card);
+    min-width: 0;
+  }
+
+  @media (max-width: 640px) {
+    .ai-visual {
+      padding: 1.1rem;
+    }
+  }
+
+  .agent,
+  .activity {
+    border-radius: 14px;
+    border: 1px solid var(--border-card);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.9rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .agent-head,
+  .activity-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .agent-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent-violet);
+    box-shadow: 0 0 10px var(--accent-violet);
+  }
+
+  .agent-ask {
+    color: var(--text-secondary);
+    margin-bottom: 0.6rem;
+    font-family: ui-monospace, 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .agent-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-family: ui-monospace, 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  .tool {
+    display: inline-block;
+    padding: 0 0.4rem;
+    margin-right: 0.35rem;
+    border-radius: 5px;
+    background: rgba(167, 139, 250, 0.14);
+    color: #c4b5fd;
+  }
+
+  .agent-steps em {
+    font-style: normal;
+    color: var(--accent-light);
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.4rem 0;
+  }
+
+  .flow-line {
+    width: 2px;
+    height: 22px;
+    background: linear-gradient(180deg, transparent, var(--accent-violet), transparent);
+    background-size: 100% 200%;
+    animation: ai-flow 2.2s linear infinite;
+  }
+
+  @keyframes ai-flow {
+    from {
+      background-position: 0 100%;
+    }
+    to {
+      background-position: 0 -100%;
+    }
+  }
+
+  .through {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-align: center;
+    color: #c4b5fd;
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.35);
+  }
+
+  .activity-host {
+    margin-left: auto;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .row {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.5rem 0;
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .row code,
+  .waiting-head code {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  .ok {
+    flex: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-emerald);
+  }
+
+  .warn {
+    flex: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+  }
+
+  .row.waiting {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+    margin-top: 0.25rem;
+    padding: 0.7rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.07);
+  }
+
+  .waiting-head {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .waiting-head code {
+    color: var(--text-primary, #e2e8f0);
+  }
+
+  .waiting-why {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+  }
+
+  .waiting-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .act {
+    padding: 0.3rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+  }
+
+  .act.primary {
+    border-color: transparent;
+    background: var(--accent-violet);
+    color: #120d24;
+  }
+
+  .rights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1rem;
+  }
+
+  .right {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    border: 1px dashed rgba(167, 139, 250, 0.4);
+    color: #c4b5fd;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-line {
+      animation: none;
+    }
+  }
+</style>

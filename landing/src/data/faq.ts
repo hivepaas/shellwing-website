@@ -13,6 +13,11 @@ export const faq: FaqItem[] = [
       'Yes. shellwing is free software under the GPL-3.0. Every feature on this page works without an account, and syncing through storage of your own (a synced folder, WebDAV, S3 or a Git repository) is free and has no limits.',
   },
   {
+    question: 'How do AI agents use my servers through shellwing?',
+    answer:
+      'In Settings › AI, add your client (Claude Code, Claude Desktop, Codex CLI, Cursor, VS Code, Windsurf, Zed, Gemini CLI, Cline, or any that speaks MCP) and paste the config shellwing shows into it. Then give it hosts: for how long, and what it may do there (run commands, read or write files, read and add to your notes, use your snippets). shellwing signs in for the agent with what you saved, so it never sees a key, a password or a passphrase. Commands on your risky list wait until you allow them, AI activity keeps everything it ran, and you can pause it or take a host back at any time.',
+  },
+  {
     question: 'How do I install it, and how does it update?',
     answer:
       'Download it for your system above: a .dmg for macOS (or brew install --cask hivepaas/tap/shellwing), an installer for Windows, an AppImage, a .deb or an .rpm for Linux. The app tells you when a newer version is out. The .dmg app, the Windows installer and the AppImage update themselves when you say so; for a .deb or an .rpm, the app shows the commands. The macOS app is signed and notarized by Apple, so macOS only asks once whether to open an app from the internet. The Windows installer is not signed yet, so SmartScreen asks you to allow it the first time.',
